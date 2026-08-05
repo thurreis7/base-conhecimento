@@ -10,9 +10,12 @@ guarda, de forma organizada e consultável, o que foi tratado, decidido e
 deixado pendente em cada reunião gravada no Zoom.
 
 **Apenas uma rotina automatizada escreve aqui.** Ela roda no Claude Code,
-lê as gravações transcritas do Zoom, reescreve a transcrição, gera uma
-síntese e atualiza o contexto acumulado de cada setor. **Ninguém deve
-fazer commit manual.** Sócios apenas consomem (leem) via Project.
+lê as transcrições da(s) **fonte(s) ativa(s)** — hoje o Zoom, no futuro
+também o Plaud e outras —, reescreve a transcrição, gera uma síntese e
+atualiza o contexto acumulado de cada setor. A fonte é uma camada
+adaptável (ver seção 0 do `_config.md`): trocar ou somar fonte não muda
+regra, molde nem pasta. Cada arquivo registra de qual `fonte` veio.
+**Ninguém deve fazer commit manual.** Sócios apenas consomem (leem).
 
 ## Hierarquia de pastas
 

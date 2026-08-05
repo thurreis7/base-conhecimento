@@ -6,6 +6,34 @@ formato, nome de pasta ou nome de setor.
 
 Fuso: America/Sao_Paulo
 
+## 0. Fontes de entrada (camada adaptavel)
+
+O sistema separa CAPTACAO (ler transcricoes de uma fonte) de PROCESSAMENTO
+(filtrar, classificar, reescrever, sintetizar, arquivar). O processamento e
+IDENTICO para qualquer fonte. Trocar ou somar fonte NAO muda regra, molde ou
+pasta — muda so o passo de captacao (PASSO 2 da rotina).
+
+Fontes:
+  ZOOM   — ATIVA. Gravacoes em nuvem via conector Zoom (transcricao VTT ou
+           AI Companion / Smart Recording).
+  PLAUD  — FUTURA (inativa). Transcricoes do dispositivo/app Plaud, lidas do
+           repositorio/export que o proprio Plaud disponibiliza (API, pasta
+           sincronizada ou arquivo — a definir quando o hardware chegar).
+           So processar quando o dono avisar e enviar o PROMPT DE ATIVACAO
+           nomeando a fonte. Ate la, ignorar por completo.
+
+Cada item processado registra no YAML:
+  fonte:      zoom | plaud | ...
+  origem_id:  identificador unico do item NAQUELA fonte
+
+DEDUPE e sempre pelo par (fonte, origem_id), nunca so pelo id. Em
+_estado.json, "processadas" e "pendentes" guardam chaves no formato
+"fonte:origem_id" (ex.: "zoom:abc123==").
+
+Para ADICIONAR uma fonte nova: (1) descrever aqui como listar os itens e
+puxar o texto daquela fonte; (2) o dono envia o prompt de ativacao nomeando
+a fonte; (3) nada mais no pipeline muda.
+
 ## 1. Hierarquia
 
 EMPRESA / SETOR / CLASSE / ANO / MES / SEMANA / DIA
@@ -60,7 +88,7 @@ linha do _indice.md.
 
 1. Titulo contem [CONF] → PULAR INTEIRA. Nao ler transcricao, nao gravar
    nada, nao indexar. Apenas contabilizar como pulada.
-2. zoom_id ja em "processadas" → pular.
+2. Par (fonte, origem_id) ja em "processadas" → pular.
 3. Duracao menor que 10 minutos → pular.
 4. Transcricao indisponivel → registrar em "pendentes" com motivo e
    seguir adiante. NUNCA travar a rotina.
@@ -117,7 +145,8 @@ gravacao: <titulo original>
 empresa: <EMPRESA>
 setor_principal: <SETOR>
 duracao_min: <n>
-zoom_id: "<id>"
+fonte: <zoom|plaud|...>
+origem_id: "<id na fonte>"
 ---
 
 ## [00:00] <tema do bloco>
@@ -136,6 +165,8 @@ classe: REUNIAO | NAO-REUNIAO
 participantes: [<...>]
 duracao_min: <n>
 confianca: alta | media | baixa
+fonte: <zoom|plaud|...>
+origem_id: "<id na fonte>"
 transcricao: <nome do arquivo de transcricao>
 ---
 
@@ -245,7 +276,7 @@ Fechada ha mais de 30 dias sai do arquivo.
 ## 9. Governanca
 
 - SO A ROTINA ESCREVE. Consumo e leitura.
-- Uma rotina, na conta de quem e dono da conta Zoom.
+- Uma rotina, na conta do dono da base (que detem o acesso as fontes).
 - Socios consomem via Project apontando para este repositorio.
 - Se mais de uma fonte escrever, o contexto acumulado entra em conflito
   e o controle de duplicidade quebra EM SILENCIO.
