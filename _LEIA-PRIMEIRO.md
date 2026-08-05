@@ -47,6 +47,17 @@ naquele setor.
    por setor) — a lista de todas as gravações e a lista de tarefas em
    aberto/fechadas do setor.
 
+## Contexto fundacional da empresa (leia para perguntas de negócio)
+
+Antes das reuniões do dia a dia, existe o **contexto-mestre da empresa** em
+[`COMPARTILHADO/CONTEXTO-MESTRE/`](COMPARTILHADO/CONTEXTO-MESTRE/) — a base
+estratégica da AFACOM (planejamento S2/2026), dividida por domínios (empresa/
+societário, pessoas/RH, produtos, comercial, financeiro, custos, impostos,
+sistemas, decisões, modelos). Comece pelo
+[`_INDICE.md`](COMPARTILHADO/CONTEXTO-MESTRE/_INDICE.md) dessa pasta: ele mapeia
+qual arquivo responde cada tipo de pergunta. O `00-fonte-completa.md` é o
+documento integral e prevalece em caso de dúvida sobre um número literal.
+
 ## ORDEM DE LEITURA — sempre nesta sequência
 
 1. **`_contexto-acumulado.md`** do setor — comece sempre por ele.
