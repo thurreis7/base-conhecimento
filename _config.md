@@ -16,11 +16,29 @@ pasta — muda so o passo de captacao (PASSO 2 da rotina).
 Fontes:
   ZOOM   — ATIVA. Gravacoes em nuvem via conector Zoom (transcricao VTT ou
            AI Companion / Smart Recording).
-  PLAUD  — FUTURA (inativa). Transcricoes do dispositivo/app Plaud, lidas do
-           repositorio/export que o proprio Plaud disponibiliza (API, pasta
-           sincronizada ou arquivo — a definir quando o hardware chegar).
-           So processar quando o dono avisar e enviar o PROMPT DE ATIVACAO
-           nomeando a fonte. Ate la, ignorar por completo.
+  PLAUD  — FUTURA (inativa). Transcricoes do gravador Plaud (NotePin S / Note
+           Pro) lidas via MCP OFICIAL da Plaud (`npx @plaud-ai/mcp`, Node >=20).
+           Ferramentas: list_files, get_file, get_note, get_transcript
+           (+ login/logout/get_current_user).
+           LIMITE-CHAVE: list_files filtra SO por NOME do arquivo (query =
+           keyword no nome) + date_from/date_to + paginacao. NAO existe busca
+           por conteudo da transcricao. Por isso a Plaud e FONTE (ingestor),
+           nunca a base consultavel — o conteudo pesquisavel mora aqui no repo.
+           Captacao (quando ativa): filtrar por date_from/date_to = HOJE; ler
+           EMPRESA/SETOR do NOME da gravacao; se o nome contiver [CONF], pular
+           SEM chamar get_transcript; senao, get_transcript (tem falante e
+           timestamp) + get_note e processar como qualquer fonte.
+           origem_id = id do arquivo Plaud. Audio NAO persiste: get_file da uma
+           presigned_url valida 24h — a base guarda transcricao+sintese (texto),
+           nao o audio; baixar na janela de 24h so se o audio for necessario.
+           So processar quando o dono avisar e enviar o PROMPT DE ATIVACAO.
+           Ate la, ignorar por completo.
+
+  CONVENCAO DE NOME AO GRAVAR NA PLAUD (o dono nomeia no app ao sincronizar,
+  porque o filtro so le o nome):
+    AAAA-MM-DD SETOR titulo curto        ex.: 2026-08-05 COMERCIAL pipeline Raul
+    AAAA-MM-DD SETOR [CONF] titulo        ex.: 2026-08-05 SOCIETARIO [CONF] Judah
+  SETOR = um da lista fechada da secao 1. [CONF] faz a rotina pular a gravacao.
 
 Cada item processado registra no YAML:
   fonte:      zoom | plaud | ...
